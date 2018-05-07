@@ -1,0 +1,46 @@
+﻿<div class="panel panel-primary"
+     ng-controller="studentsCtrl as vm">
+    <div class="panel-heading"
+         style="font-size:large">
+        Student List
+    </div>
+
+    <div class="panel-body">
+        <table class="table">
+
+            <thead>
+                <tr>
+                    <td>Student ID</td>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="student in vm.students">
+                    <td>{{ student.StudentID}}</td>
+                    <td>{{ student.FirstName }}</td>
+                    <td>{{ student.LastName }}</td>
+                    <td><button data-student-id="@student.StudentID" class="btn-link js-delete">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+        $(document).ready(function () {
+            $("#studentsTbl .js-delete").on("click", function () {
+                var button = $(this);
+                if (confirm("Do you want to delete the student?")) {
+                    $.ajax({
+                        url: "/api/students/" + $(this).attr("data-student-id"),
+                        method: "DELETE",
+                        success: function () {
+                            button.parents("tr").remove();
+                        }
+                    });
+                }
+            });
+        });
+</script>
